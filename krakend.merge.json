@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "host": ["https://jsonplaceholder.typicode.com"],
+  "output_encoding": "json",
+  "name": "MyTest",
+
+  "endpoints": [
+    {
+      "endpoint": "/okta-protected",
+      "extra_config": {
+        "github.com/devopsfaith/krakend-jose/validator": {
+          "alg": "RS256",
+          "jwk-url": "https://dev-26798885.okta.com/oauth2/default/v1/keys"
+        }
+      },
+      "backend": [
+        {
+          "host": ["http://localhost:8080"],
+          "url_pattern": "/__health"
+        }
+      ]
+    },
+
+    {
+      "endpoint": "/mixed/{postId}",
+      "method": "GET",
+      "output_encoding": "json",
+      "extra_config": {
+        "extra_config": {
+          "github.com/devopsfaith/krakend/proxy": {
+            "sequential": true
+          }
+      },
+      "backend": [
+        {
+          "url_pattern": "/users/{postId}",
+          "method": "GET",
+          "host": ["https://jsonplaceholder.typicode.com"]
+          
+        },
+        {
+          "url_pattern": "/users/{postId}/posts",
+          "method": "POST",
+          "host": ["https://jsonplaceholder.typicode.com"],
+        }
+      ]
+    }
+  ]
+}

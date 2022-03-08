@@ -1,0 +1,62 @@
+{
+  "version": 3,
+  "port": 8080,
+  "name": "KrakenD request and response modifier demo",
+  "host": [
+    "https://api.github.com"
+  ],
+  "plugin": {
+    "pattern": ".so",
+    "folder": "plugins"
+  },
+  "endpoints": [
+    {
+      "endpoint": "/github/orgs/{org}",
+      "backend": [
+        {
+          "url_pattern": "/orgs/{org}",
+          "allow": [
+            "avatar_url",
+            "blog",
+            "followers"
+          ],
+          "mapping": {
+            "blog": "website"
+          },
+          "group": "org",
+          "extra_config": {
+            "proxy": {
+              "sequential": true
+            },
+            "plugin/req-resp-modifier": {
+              "name": [
+                "krakend-debugger"
+              ]
+            }
+          }
+        },
+        {
+          "url_pattern": "/orgs/{org}/repos",
+          "mapping": {
+            "collection": "repos"
+          },
+          "is_collection": true,
+          "extra_config": {
+            "plugin/req-resp-modifier": {
+              "name": [
+                "krakend-debugger"
+              ]
+            }
+          }
+        }
+      ],
+      "extra_config": {
+        "plugin/req-resp-modifier": {
+          "name": [
+            "krakend-debugger"
+          ]
+        }
+      }
+    }
+  ]
+}
