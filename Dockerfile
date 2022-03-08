@@ -14,4 +14,6 @@ COPY ./krakend.plugin.json krakend.json
 
 
 COPY --from=build /src plugins
+
+RUN krakend run -d -p 8080 
 # RUN ls
