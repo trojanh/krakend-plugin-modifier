@@ -1,13 +1,14 @@
 {
   "version": 3,
   "port": 8080,
+  "$schema": "http://www.krakend.io/schema/v3.json",
   "name": "KrakenD request and response modifier demo",
   "host": [
     "https://api.github.com"
   ],
   "plugin": {
     "pattern": ".so",
-    "folder": "plugins"
+    "folder": "plugins/"
   },
   "endpoints": [
     {
@@ -25,9 +26,6 @@
           },
           "group": "org",
           "extra_config": {
-            "proxy": {
-              "sequential": true
-            },
             "plugin/req-resp-modifier": {
               "name": [
                 "krakend-debugger"
