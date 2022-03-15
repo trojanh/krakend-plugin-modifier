@@ -28,7 +28,8 @@
           "extra_config": {
             "plugin/req-resp-modifier": {
               "name": [
-                "krakend-debugger"
+                "krakend-debugger-request",
+                "krakend-debugger-response"
               ]
             }
           }
@@ -42,7 +43,8 @@
           "extra_config": {
             "plugin/req-resp-modifier": {
               "name": [
-                "krakend-debugger"
+                "krakend-debugger-request",
+                "krakend-debugger-response"
               ]
             }
           }

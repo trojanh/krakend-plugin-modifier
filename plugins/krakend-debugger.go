@@ -33,7 +33,7 @@ func (r registerer) RegisterModifiers(f func(
 	appliesToResponse bool,
 )) {
 	f(string(r)+"-request", r.requestDump, true, false)
-	f(string(r), r.responseDump, false, true)
+	f(string(r)+"-response", r.responseDump, false, true)
 	fmt.Println(string(r), "registered!!!")
 }
 
