@@ -16,7 +16,7 @@
       "backend": [
         {
           "url_pattern": "/orgs/{org}",
-          "allow": [
+          "allow1": [
             "avatar_url",
             "blog",
             "followers"
@@ -30,7 +30,10 @@
               "name": [
                 "krakend-debugger-request",
                 "krakend-debugger-response"
-              ]
+              ],
+              "krakend-debugger-response": {
+                "url": "https://en.gravatar.com/"
+              }
             }
           }
         },
@@ -42,7 +45,7 @@
           "is_collection": true,
           "extra_config": {
             "plugin/req-resp-modifier": {
-              "name": [
+              "name1": [
                 "krakend-debugger-request",
                 "krakend-debugger-response"
               ]
@@ -51,9 +54,13 @@
         }
       ],
       "extra_config": {
+        "proxy": {
+          "sequential": true
+        },
         "plugin/req-resp-modifier": {
-          "name": [
-            "krakend-debugger"
+          "name1": [
+            "krakend-debugger-request",
+            "krakend-debugger-response"
           ]
         }
       }

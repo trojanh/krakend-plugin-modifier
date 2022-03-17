@@ -2,7 +2,10 @@ package proxy
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
@@ -11,6 +14,41 @@ import (
 	"github.com/luraproject/lura/v2/config"
 	"github.com/luraproject/lura/v2/logging"
 )
+
+type Metadata struct {
+	Headers    map[string][]string
+	StatusCode int
+}
+
+// Response is the entity returned by the proxy
+type Response struct {
+	Data       map[string]interface{}
+	IsComplete bool
+	Metadata   Metadata
+	Io         io.Reader
+}
+
+var (
+	// ErrNoBackends is the error returned when an endpoint has no backends defined
+	ErrNoBackends = errors.New("all endpoints must have at least one backend")
+	// ErrTooManyBackends is the error returned when an endpoint has too many backends defined
+	ErrTooManyBackends = errors.New("too many backends for this proxy")
+	// ErrTooManyProxies is the error returned when a middleware has too many proxies defined
+	ErrTooManyProxies = errors.New("too many proxies for this proxy middleware")
+	// ErrNotEnoughProxies is the error returned when an endpoint has not enough proxies defined
+	ErrNotEnoughProxies = errors.New("not enough proxies for this endpoint")
+)
+
+type Proxy func(ctx context.Context, request *http.Request) (*Response, error)
+
+func EmptyMiddleware(next ...Proxy) Proxy {
+	if len(next) > 1 {
+		panic(ErrTooManyProxies)
+	}
+	return next[0]
+}
+
+type Middleware func(next ...Proxy) Proxy
 
 // NewMergeDataMiddleware creates proxy middleware for merging responses from several backends
 func NewMergeDataMiddleware(logger logging.Logger, endpointConfig *config.EndpointConfig) Middleware {
