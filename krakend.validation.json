@@ -27,6 +27,42 @@
     ],
     "endpoints": [
         {
+            "endpoint": "/orders",
+            "method": "POST",
+            "backend": [
+                {
+                    "url_pattern": "/market/order",
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "req_params.domain == 'g10'"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url_pattern": "/local/order",
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "req_params.domain == 'local'"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url_pattern": "/food/order",
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "req_params.domain == 'food'"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
             "endpoint": "/posts",
             "method": "POST",
             "backend": [
