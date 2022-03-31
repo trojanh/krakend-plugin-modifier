@@ -1,0 +1,83 @@
+{
+    "version": 3,
+    "port": 8080,
+    "extra_config": {
+        "github_com/devopsfaith/krakend-swagger": {
+            "fraction": 1,
+            "refresh": "60s",
+            "path": "/swagger.json",
+            "description": "This is a sample server. You can find out more about at [http://blah](http://blah.blah.com)",
+            "version": "1.0.0",
+            "host": "my.api.com",
+            "basePath": "/v1",
+            "termsOfService": "http://url.to/tos",
+            "contact-name": "The wonderful API department",
+            "contact-email": "contact@example.com",
+            "contact-url": "https://your.company/developers",
+            "license-name": "MIT",
+            "license-url": "https://opensource.org/licenses/MIT",
+            "tags": [
+                "B2B",
+                "Restricted"
+            ]
+        }
+    },
+    "host": [
+        "https://jsonplaceholder.typicode.com"
+    ],
+    "endpoints": [
+        {
+            "endpoint": "/posts",
+            "method": "POST",
+            "backend": [
+                {
+                    "url_pattern": "/posts"
+                }
+            ],
+            "extra_config": {
+                "validation/json-schema": {
+                    "type": "object",
+                    "properties": {
+                        "firstName": {
+                            "type": "string",
+                            "description": "The person's first name."
+                        },
+                        "lastName": {
+                            "type": "string",
+                            "description": "The person's last name."
+                        },
+                        "age": {
+                            "description": "Age in years which must be equal to or greater than zero.",
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "body": {
+                            "type": "string"
+                        },
+                        "extra": {
+                            "type": "object",
+                            "required": [
+                                "iss",
+                                "exp"
+                            ],
+                            "properties": {
+                                "iss": {
+                                    "type": "string"
+                                },
+                                "exp": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "userId": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
