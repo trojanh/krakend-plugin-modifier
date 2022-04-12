@@ -114,6 +114,81 @@
                     }
                 }
             }
+        },
+        {
+            "endpoint": "/cel",
+            "input_query_strings": [
+                "foo"
+            ],
+            "backend": [
+                {
+                    "url_pattern": "/__debug/0",
+                    "host": [
+                      "http://localhost:8080"
+                  ]
+                },
+                {
+                    "url_pattern": "/__debug/1?ignore={resp0_message}",
+                    "group": "sequence-1",
+                    "host": [
+                      "http://localhost:8080"
+                  ],
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "has(req_params.Resp0_message)"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url_pattern": "/__debug/2",
+                    "group": "sequence-2",
+                    "host": [
+                      "http://localhost:8080"
+                  ],
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "resp_data.sequence-2.message == 'pong'"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url_pattern": "/__debug/3",
+                    "group": "sequence-3",
+                    "host": [
+                      "http://localhost:8080"
+                  ],
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "has(req_querystring.foo)"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "url_pattern": "/__debug/4",
+                    "group": "sequence-4",
+                    "host": [
+                      "http://localhost:8080"
+                  ],
+                    "extra_config": {
+                        "validation/cel": [
+                            {
+                                "check_expr": "has(req_params.NEVER_CALLED_BACKEND)"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "extra_config": {
+                "proxy": {
+                    "sequential": true
+                }
+            }
         }
     ]
 }
